@@ -1,0 +1,235 @@
+Buyer City,Ticket Type,nunique,count
+Boston,Pay What You Can,41,79
+Boston,Premium,8,21
+Boston,Regular,15,21
+Cambridge,Pay What You Can,23,32
+Cambridge,Premium,6,16
+Cambridge,Regular,18,50
+Cambridge,Student,1,3
+Brookline,Pay What You Can,17,35
+Brookline,Premium,5,8
+Brookline,Regular,1,3
+Newton,Regular,8,15
+Newton,Premium,1,1
+Newton,Pay What You Can,12,23
+Watertown,Regular,5,17
+Watertown,Pay What You Can,5,9
+Watertown,Premium,2,5
+Arlington,Pay What You Can,5,11
+Arlington,Regular,5,6
+Arlington,Premium,3,8
+Medford,Pay What You Can,6,13
+Medford,Premium,1,3
+Medford,Regular,2,5
+Jamaica Plain,Regular,2,5
+Jamaica Plain,Pay What You Can,4,9
+Jamaica Plain,Premium,1,4
+Somerville,Pay What You Can,7,12
+Somerville,Premium,1,2
+Somerville,Regular,1,2
+Chestnut Hill,Pay What You Can,5,11
+Chestnut Hill,Premium,2,4
+,Pay What You Can,1,3
+,Regular,1,4
+,Premium,1,2
+,Pay What You Can,2,3
+,Premium,1,2
+,Pay What You Can,2,4
+,Pay What You Can,1,2
+,Premium,1,2
+,Pay What You Can,1,2
+,Regular,1,3
+,Pay What You Can,2,4
+,Pay What You Can,1,2
+,Premium,1,3
+,Regular,1,1
+,Premium,1,2
+,Pay What You Can,1,1
+,Pay What You Can,2,2
+,Pay What You Can,1,1
+,Pay What You Can,7,11
+,Pay What You Can,1,1
+,Regular,1,5
+,Pay What You Can,2,5
+,Regular,1,2
+,Premium,1,3
+,Pay What You Can,1,2
+,Premium,2,2
+,Pay What You Can,1,3
+,Regular,1,2
+,Pay What You Can,1,1
+,Premium,1,2
+,Premium,1,1
+,Regular,1,1
+,Pay What You Can,1,2
+,Regular,3,6
+,Premium,1,1
+,Premium,1,3
+,Regular,1,1
+,Pay What You Can,1,2
+,Regular,1,1
+,Premium,1,1
+,Regular,1,1
+,Premium,1,3
+,Pay What You Can,1,8
+,Pay What You Can,2,7
+,Pay What You Can,1,2
+,Regular,1,1
+,Pay What You Can,1,2
+,Regular,1,2
+,Pay What You Can,1,4
+,Pay What You Can,1,1
+,Pay What You Can,1,2
+,Pay What You Can,1,1
+,Regular,1,2
+,Pay What You Can,2,4
+,Regular,1,1
+,Student,1,1
+,Premium,1,2
+,Pay What You Can,1,2
+,Pay What You Can,4,11
+,Regular,1,2
+,Pay What You Can,1,3
+,Regular,1,1
+,Pay What You Can,1,1
+,Regular,1,1
+,Pay What You Can,1,1
+,Premium,1,1
+,Premium,1,2
+,Pay What You Can,1,2
+,Regular,1,1
+,Regular,1,2
+,Pay What You Can,1,2
+,Pay What You Can,1,2
+,Premium,2,3
+,Regular,2,4
+,Pay What You Can,1,1
+,Pay What You Can,2,2
+,Pay What You Can,1,3
+,Pay What You Can,1,2
+,Pay What You Can,1,2
+,Pay What You Can,1,1
+,Pay What You Can,1,3
+,Regular,1,3
+,Pay What You Can,1,2
+,Pay What You Can,1,3
+,Pay What You Can,2,4
+,Pay What You Can,1,5
+,Pay What You Can,1,2
+,Pay What You Can,3,11
+,Premium,1,1
+,Regular,2,2
+,Pay What You Can,5,7
+,Regular,1,1
+,Pay What You Can,1,2
+,Student,2,2
+,Regular,2,2
+,Pay What You Can,1,3
+,Pay What You Can,1,4
+,Pay What You Can,1,2
+,Pay What You Can,1,1
+,Pay What You Can,3,6
+,Regular,2,2
+,Pay What You Can,1,3
+,Regular,1,1
+,Pay What You Can,1,2
+,Premium,1,1
+,Pay What You Can,1,2
+,Pay What You Can,1,1
+,Regular,1,2
+,Pay What You Can,1,1
+,Premium,2,2
+,Regular,1,1
+,Pay What You Can,1,2
+,Regular,2,3
+,Pay What You Can,2,4
+,Premium,2,4
+,Pay What You Can,2,3
+,Pay What You Can,3,5
+,Regular,1,2
+,Pay What You Can,4,6
+,Premium,1,3
+,Regular,1,1
+,Pay What You Can,1,2
+,Regular,1,3
+,Pay What You Can,1,1
+,Regular,1,2
+,Regular,1,1
+,Pay What You Can,1,2
+,Regular,1,2
+,Pay What You Can,2,3
+,Regular,1,2
+,Pay What You Can,1,1
+,Regular,1,1
+,Pay What You Can,1,3
+,Pay What You Can,1,2
+,Regular,1,2
+,Pay What You Can,3,7
+,Regular,1,3
+,Premium,2,2
+,Regular,1,2
+,Pay What You Can,1,2
+,Premium,1,2
+,Regular,1,8
+,Regular,2,3
+,Pay What You Can,4,5
+,Premium,1,2
+,Regular,2,4
+,Pay What You Can,1,1
+,Pay What You Can,1,2
+,Pay What You Can,1,1
+,Regular,1,2
+,Pay What You Can,1,1
+,Premium,2,6
+,Pay What You Can,1,2
+,Regular,2,4
+,Student,1,1
+,Premium,1,1
+,Pay What You Can,2,3
+,Pay What You Can,1,2
+,Pay What You Can,1,3
+,Pay What You Can,1,3
+,Pay What You Can,1,1
+,Premium,1,4
+,Regular,2,3
+,Pay What You Can,1,3
+,Regular,1,1
+,Pay What You Can,2,2
+,Premium,1,2
+,Pay What You Can,1,2
+,Regular,1,2
+,Pay What You Can,1,2
+,Premium,1,2
+,Pay What You Can,1,2
+,Regular,2,3
+,Pay What You Can,2,8
+,Regular,2,5
+,Pay What You Can,1,1
+,Pay What You Can,1,2
+,Regular,1,1
+,Pay What You Can,2,2
+,Pay What You Can,2,3
+,Premium,1,1
+,Regular,1,2
+,Premium,1,7
+,Pay What You Can,4,7
+,Premium,1,4
+,Pay What You Can,1,2
+,Premium,1,2
+,Pay What You Can,2,3
+,Regular,2,2
+,Pay What You Can,1,2
+,Student,1,2
+,Pay What You Can,1,1
+,Premium,1,2
+,Regular,1,1
+,Premium,1,2
+,Premium,2,3
+,Pay What You Can,4,4
+,Premium,1,1
+,Premium,1,1
+,Pay What You Can,2,4
+,Premium,1,2
+,Pay What You Can,2,3
+,Premium,1,2
+,Pay What You Can,1,2

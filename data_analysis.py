@@ -72,12 +72,12 @@ class TicketAnalyzer:
             {"Ticket Net Proceeds": "mean",#np.nanmean,
              "Order ID": ["nunique", "count"]})
 
-        
+
         zip_orders_df.columns = zip_orders_df.columns.droplevel(0)  # Necessary for chloropleth function
         zip_orders_df = zip_orders_df.reset_index()
 
-        if exclude_pwyc:
-            zip_orders_df = zip_orders_df[zip_orders_df["Ticket Type"] != "Pay What You Can"]
+        # if exclude_pwyc:
+        #     zip_orders_df = zip_orders_df[zip_orders_df["Ticket Type"] != "Pay What You Can"]
 
         # pd.set_option("display.max_rows", None)
         # print(zip_orders_df)

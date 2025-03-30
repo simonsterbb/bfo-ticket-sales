@@ -132,7 +132,7 @@ def main():
     if run_all or "cum_income" in analyses_to_run:
         print('\nAnalyzing cumulative income...')
         cumulative_income_df = analyzer.analyze_cumulative_income(loader.concert_dates)
-        save_dataframe(cumulative_income_df, 'cumulative_income', )
+        save_dataframe(cumulative_income_df, 'cumulative_income.csv', args.output_dir)
 
         cum_income_fig = visualizer.plot_cumulative_income(cumulative_income_df)
 

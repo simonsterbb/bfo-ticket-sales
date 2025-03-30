@@ -106,18 +106,51 @@ class TicketVisualizer:
 
     def plot_orders_on_map(self, zip_orders_df, geojson,exclude_pwyc=True):
 
-        fig = px.choropleth_mapbox(zip_orders_df,
-                                   geojson=geojson,
-                                   locations="Buyer Postal Code",
-                                   color="count",
-                                   color_continuous_scale="Viridis",
-                                   mapbox_style="carto-positron",
-                                   zoom=8, center={"lat": 42.363075, "lon": -71.058690},
-                                   featureidkey="properties.ZCTA5CE10",
-                                   opacity=0.5,
-                                   labels={'count': 'Tickets Sold'})
+        fig = go.Figure()
 
-        fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        all_guests_df = {"All Guests": zip_orders_df}
+        paying_guests_df = {"Paying Guests": zip_orders_df[zip_orders_df["Ticket Type"] != "Pay What You Can"]}
+        pwyc_guests_df = {"Pay-What-You-Can Guests": zip_orders_df[zip_orders_df["Ticket Type"] == "Pay What You Can"]}
+        menu_data_dict = {**all_guests_df, **paying_guests_df, **pwyc_guests_df}
+
+        menu_list = []
+        j = 0
+        for category, df in menu_data_dict.items():
+
+            fig.add_trace(go.Choroplethmapbox(
+                geojson=geojson,
+                locations=df["Buyer Postal Code"],
+                z=df["count"],
+                colorscale="Viridis",
+                zmin=0,
+                zmax=df["count"].max(),
+                featureidkey="properties.ZCTA5CE10",
+                marker_opacity=0.5,
+                marker_line_width=0,
+            )
+            )
+            menu_list.append(dict(label=category,
+                         method="update",
+                         args=[{"visible": [True if i == j else False for i in range(len(menu_data_dict))]}]),
+                             )
+
+
+            j+=1
+
+
+        fig.update_layout(mapbox_style="carto-positron",
+                          mapbox_zoom=8,
+                          mapbox_center={"lat": 42.363075, "lon": -71.058690},
+                          margin={"r": 0, "t": 0, "l": 0, "b": 0})
+
+        fig.update_layout(
+            updatemenus=[
+                dict(buttons=menu_list,
+                    direction="down"
+                         )
+                ]
+        )
+
 
         return fig
 

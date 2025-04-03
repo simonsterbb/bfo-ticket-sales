@@ -35,3 +35,8 @@ def print_analysis_summary(data_dict, title="Analysis Summary"):
     print("\n" + "=" * 80)
     print(f" {title} ".center(80, "="))
     print("=" * 80)
+
+
+def save_geojson(state, geo_data):
+    with open(state + '_zip.geojson', 'w') as f:
+        json.dump(geo_data, f)

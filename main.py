@@ -3,7 +3,7 @@ import os
 from data_loader import TicketDataLoader
 from data_analysis import TicketAnalyzer
 from visualization import TicketVisualizer
-from config import DATA_PATH_2024, MASS_ZIP_CODE_URL
+# from config import DATA_PATH_2024, MASS_ZIP_CODE_URL, NY_ZIPCODE_URL
 from utils import  save_figure, save_dataframe
 
 def parse_args():
@@ -92,9 +92,20 @@ def main():
         save_dataframe(zip_orders_df,'zipcode_analysis_map.csv', args.output_dir)
 
         # Load geographic data
-        geo_data = loader.load_geo_data(MASS_ZIP_CODE_URL)
+        state_list = ["MA",
+                      "NY",
+                      "VT",
+                      "NH",
+                      "ME",
+                      "CT",
+                      "RI",
+                      "NJ"]
 
-        zip_order_fig = visualizer.plot_orders_on_map(zip_orders_df, geo_data)
+        dcombined_geojson = loader.combine_geo_data(state_list)
+
+        #combined_geojson = loader.load_and_combine(state_list)
+
+        zip_order_fig = visualizer.plot_orders_on_map(zip_orders_df, dcombined_geojson)
 
         if args.save_plots:
             save_figure(zip_order_fig, 'tickets_by_zipcode_map', args.figures_dir, args.plot_format)

@@ -3,7 +3,7 @@ import os
 from data_loader import TicketDataLoader
 from data_analysis import TicketAnalyzer
 from visualization import TicketVisualizer
-# from config import DATA_PATH_2024, MASS_ZIP_CODE_URL, NY_ZIPCODE_URL
+from config import DATA_PATH_2024, DATA_PATH_2025 #MASS_ZIP_CODE_URL, NY_ZIPCODE_URL
 from utils import  save_figure, save_dataframe
 
 def parse_args():
@@ -11,7 +11,7 @@ def parse_args():
 
     parser = argparse.ArgumentParser(description="Analyze ticket sales data.")
 
-    parser.add_argument('--data', type=str, default='S4 Ticket Data COMPLETE.csv',
+    parser.add_argument('--data', type=str, default=DATA_PATH_2025,#'S4 Ticket Data COMPLETE.csv',
                         help='Path to the ticket data CSV file')
     parser.add_argument('--output-dir', type=str, default='output',
                         help='Directory to save output files')

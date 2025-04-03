@@ -26,6 +26,37 @@ class TicketDataLoader:
 
         df = self.raw_data.copy()
 
+        if "Buyer Name" in df.columns:
+            return self.process_format_A(df) # Season 5
+        elif "Buyer First" in df.columns:
+            return self.process_format_B(df) # Season 4
+        else:
+            raise ValueError("Unknown file format")
+
+    def process_format_A(self, df):
+
+        # Take value per ticket and replicate rows
+        df["Ticket Net Proceeds"] = df["Order Total"]/df["Tickets"]
+        df = df.loc[df.index.repeat(df["Tickets"])].reset_index(drop=True)
+
+        # Clean date and time
+        df["Time of Purchase"] = pd.to_datetime(df['Date & time']).dt.time
+        df["Date of Purchase"] =  pd.to_datetime(df['Date & time']).dt.date
+
+        # Clean postal codes and city names
+        #print(["hi" + str(df['Buyer Postal Code'].iloc[j])for j in range(len(df))])
+        df["Buyer Postal Code"] = pd.Series(["0" + str(code)
+                                   if len(str(code)) == 4
+                                   else code
+                                   for code in df["Buyer Postal Code"]])
+        df["Buyer City"] = df["Buyer City"].str.title()
+        df["Tickets in Order"] = df["Tickets"]
+        self.data = df
+        return self.data
+
+
+    def process_format_B(self, df):
+
         # Clean monetary values
         df["Ticket Net Proceeds"] = df["Ticket Net Proceeds"].replace({r'\$':''}, regex=True).replace(' -   ', 0).astype(float)
 

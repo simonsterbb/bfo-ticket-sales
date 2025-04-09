@@ -155,6 +155,8 @@ class TicketVisualizer:
         return fig
 
     def plot_weekly(self, weekly_df):
+
+
         fig = px.line(weekly_df,
                       x="Date of Purchase",
                       y="Ticket Net Proceeds",

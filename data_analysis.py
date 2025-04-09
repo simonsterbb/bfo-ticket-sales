@@ -9,35 +9,40 @@ class TicketAnalyzer:
 
     def analyze_by_source(self):
 
-        heard_about_df = self.data.groupby(
-            by=["How did you hear about this event? (Buyer)", "Ticket Type"],
-            as_index=False
-        ).aggregate({
-            "Ticket Net Proceeds": "sum",
-            "Order ID": ["nunique"]
-        })
+        if 'How did you hear about this event? (Buyer)' in self.data:
 
-        # Calculate average ticket price
-        heard_about_df["Average Ticket Price"] = heard_about_df["Ticket Net Proceeds"]["sum"] / \
-                                                 heard_about_df["Order ID"]["nunique"]
-        # pd.set_option('display.max_columns', None)
+            heard_about_df = self.data.groupby(
+                by=["How did you hear about this event? (Buyer)", "Ticket Type"],
+                as_index=False
+            ).aggregate({
+                "Ticket Net Proceeds": "sum",
+                "Order ID": ["nunique"]
+            })
 
-        # Format df (Flatten column names
-        flat_cols = []
-        [flat_cols.append(i[0]) for i in
-         heard_about_df.columns]  # iterate through this tuples and join them as single string
-        heard_about_df.columns = flat_cols  # now assign the list of flattened columns to the grouped columns.
+            # Calculate average ticket price
+            heard_about_df["Average Ticket Price"] = heard_about_df["Ticket Net Proceeds"]["sum"] / \
+                                                     heard_about_df["Order ID"]["nunique"]
+            # pd.set_option('display.max_columns', None)
 
-        # Sort by total sales
-        category_sums = heard_about_df.groupby("How did you hear about this event? (Buyer)")["Order ID"].sum()
-        sorted_categories = category_sums.sort_values(ascending=False).index
-        heard_about_df["How did you hear about this event? (Buyer)"] = pd.Categorical(
-            heard_about_df["How did you hear about this event? (Buyer)"],
-            categories=sorted_categories,
-            ordered=True)
-        heard_about_df = heard_about_df.sort_values(by="How did you hear about this event? (Buyer)")
+            # Format df (Flatten column names
+            flat_cols = []
+            [flat_cols.append(i[0]) for i in
+             heard_about_df.columns]  # iterate through this tuples and join them as single string
+            heard_about_df.columns = flat_cols  # now assign the list of flattened columns to the grouped columns.
 
-        return heard_about_df
+            # Sort by total sales
+            category_sums = heard_about_df.groupby("How did you hear about this event? (Buyer)")["Order ID"].sum()
+            sorted_categories = category_sums.sort_values(ascending=False).index
+            heard_about_df["How did you hear about this event? (Buyer)"] = pd.Categorical(
+                heard_about_df["How did you hear about this event? (Buyer)"],
+                categories=sorted_categories,
+                ordered=True)
+            heard_about_df = heard_about_df.sort_values(by="How did you hear about this event? (Buyer)")
+
+            return heard_about_df
+
+        else:
+            raise ValueError("No data available")
 
     def analyze_by_city(self, select_top=10):
         """Analyze ticket data by city"""
@@ -92,9 +97,11 @@ class TicketAnalyzer:
             'Tickets in Order': 'count'
         }).reset_index()
 
+        print(self.data)
         # Add ticket proceeds together by week
         weekly_df = grouped.groupby(["Event", pd.Grouper(key="Date of Purchase", freq="W")])[
             "Ticket Net Proceeds"].sum().reset_index()
+        print(weekly_df)
         return weekly_df
 
     def analyze_time_series(self):

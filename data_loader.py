@@ -25,23 +25,40 @@ class TicketDataLoader:
             self.load_raw_data()
 
         df = self.raw_data.copy()
-
         if "Buyer Name" in df.columns:
             return self.process_format_A(df) # Season 5
-        elif "Buyer First" in df.columns:
+        elif "Buyer First Name" in df.columns:
             return self.process_format_B(df) # Season 4
         else:
             raise ValueError("Unknown file format")
 
     def process_format_A(self, df):
-
+        print(df)
         # Take value per ticket and replicate rows
-        df["Ticket Net Proceeds"] = df["Order Total"]/df["Tickets"]
+        df["Ticket Net Proceeds"] = round(df["Order Total"]/df["Tickets"], 2)
         df = df.loc[df.index.repeat(df["Tickets"])].reset_index(drop=True)
 
+
+
+        # Set Ticket Type
+        df["Ticket Type"] = "Other"
+        df.loc[df["Ticket Net Proceeds"] == 53.63, "Ticket Type"] = "Premium"
+        df.loc[df["Ticket Net Proceeds"] == 32.59, "Ticket Type"] = "Regular"
+        df.loc[df["Ticket Net Proceeds"] < 32.59, "Ticket Type"] = "Pay What You Can"
+
+        # Define Free Dickets
+        df["Payment Type"] = "Online"
+        df.loc[df["Ticket Net Proceeds"] == 0, "Payment Type"] = "Free"
+
+
         # Clean date and time
-        df["Time of Purchase"] = pd.to_datetime(df['Date & time']).dt.time
-        df["Date of Purchase"] =  pd.to_datetime(df['Date & time']).dt.date
+
+        df["Date & time"] = pd.to_datetime(df["Date & time"])#, format="%-m/%-d/%Y %H:%M")
+        df["Time of Purchase"] = df['Date & time'].dt.time
+        df["Date of Purchase"] =  pd.to_datetime(df['Date & time'].dt.date)
+
+
+
 
         # Clean postal codes and city names
         #print(["hi" + str(df['Buyer Postal Code'].iloc[j])for j in range(len(df))])
@@ -50,8 +67,10 @@ class TicketDataLoader:
                                    else code
                                    for code in df["Buyer Postal Code"]])
         df["Buyer City"] = df["Buyer City"].str.title()
+
         df["Tickets in Order"] = df["Tickets"]
         self.data = df
+
         return self.data
 
 
@@ -64,6 +83,7 @@ class TicketDataLoader:
         df["Date of Purchase"] = pd.to_datetime(df["Date of Purchase"], format="%m/%d/%y %H:%M")
         df["Time of Purchase"] = df["Date of Purchase"].dt.time
         df["Date of Purchase"] = pd.to_datetime(df["Date of Purchase"].dt.date)
+
 
         # Clean postal codes and city names
         df["Buyer Postal Code"] = df["Buyer Postal Code"].str.split("-").str[0]  # Clean up postal codes with a hyphen in them

@@ -1,0 +1,23 @@
+[33mcommit b460d5ae6e76054e533c5f06bc779ae9c55aa484[m
+Author: steve <simoncblackburn@gmail.com>
+Date:   Thu Apr 3 01:57:23 2025 -0400
+
+    Remove figures folder from repository
+
+[33mcommit 5696e48fb117ff33efe4784a79cc660011dc67c0[m
+Author: steve <simoncblackburn@gmail.com>
+Date:   Wed Apr 2 23:20:07 2025 -0400
+
+    Added additional state zips
+
+[33mcommit 7254666195702e73f76db9501694b2f36bf2cb8a[m
+Author: steve <simoncblackburn@gmail.com>
+Date:   Sat Mar 29 22:32:32 2025 -0400
+
+    Created a dropdown choropleth with a variable number of conditions
+
+[33mcommit 11eb8f04abf19dc5d49569397deffc6770283006[m
+Author: steve <simoncblackburn@gmail.com>
+Date:   Sat Mar 29 19:29:27 2025 -0400
+
+    Refactor code from main3 to be nicely packaged

@@ -11,7 +11,9 @@ def parse_args():
 
     parser = argparse.ArgumentParser(description="Analyze ticket sales data.")
 
-    parser.add_argument('--data', type=str, default=DATA_PATH_2025,#'S4 Ticket Data COMPLETE.csv',
+    parser.add_argument('--data', type=str, nargs='+',
+                        default=DATA_PATH_2025,
+                        choices=[DATA_PATH_2024, DATA_PATH_2025],#'S4 Ticket Data COMPLETE.csv',
                         help='Path to the ticket data CSV file')
     parser.add_argument('--output-dir', type=str, default='output',
                         help='Directory to save output files')
@@ -55,20 +57,24 @@ def main():
 
     if run_all or "source" in analyses_to_run:
         print('\nAnalyzing ticket sources...')
-        heard_about_df = analyzer.analyze_by_source()
-        save_dataframe(heard_about_df, 'source_analysis.csv', args.output_dir)
+        try:
+            heard_about_df = analyzer.analyze_by_source()
+            save_dataframe(heard_about_df, 'source_analysis.csv', args.output_dir)
 
-        # Create visualizations for where people found out about BFO analysis
-        pwyc_source_fig = visualizer.plot_pwyc_by_source(heard_about_df)
-        source_fig = visualizer.plot_by_source(heard_about_df)
+            # Create visualizations for where people found out about BFO analysis
+            pwyc_source_fig = visualizer.plot_pwyc_by_source(heard_about_df)
+            source_fig = visualizer.plot_by_source(heard_about_df)
 
-        if args.save_plots:
-            save_figure(pwyc_source_fig, 'pwyc_by_source', args.figures_dir, args.plot_format)
-            save_figure(source_fig, 'by_source', args.figures_dir, args.plot_format)
+            if args.save_plots:
+                save_figure(pwyc_source_fig, 'pwyc_by_source', args.figures_dir, args.plot_format)
+                save_figure(source_fig, 'by_source', args.figures_dir, args.plot_format)
 
-        if args.show_plots:
-            pwyc_source_fig.show()
-            source_fig.show()
+            if args.show_plots:
+                pwyc_source_fig.show()
+                source_fig.show()
+        except ValueError:
+            print("No data for how ticket holders heard about the event")
+
 
     if run_all or "city" in analyses_to_run:
         print('\nAnalyzing ticket sales by city...')

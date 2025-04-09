@@ -12,6 +12,7 @@ class TicketDataLoader:
         self.raw_data = None
         self.data = None
         self.geo_data = None
+        self.data_dict = None
         self.concert_dates = CONCERT_DATES
 
     def load_raw_data(self):
@@ -33,7 +34,6 @@ class TicketDataLoader:
             raise ValueError("Unknown file format")
 
     def process_format_A(self, df):
-        print(df)
         # Take value per ticket and replicate rows
         df["Ticket Net Proceeds"] = round(df["Order Total"]/df["Tickets"], 2)
         df = df.loc[df.index.repeat(df["Tickets"])].reset_index(drop=True)

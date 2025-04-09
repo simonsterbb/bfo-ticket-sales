@@ -154,24 +154,92 @@ class TicketVisualizer:
 
         return fig
 
-    def plot_weekly(self, weekly_df):
+    def plot_weekly(self, weekly_dfs):
 
 
-        fig = px.line(weekly_df,
-                      x="Date of Purchase",
-                      y="Ticket Net Proceeds",
-                      color="Event",
+        fig = go.Figure()
 
-                      labels={
-                          "Date of Purchase": "Date of Purchase",
-                          "Ticket Net Proceeds": "Weekly Ticket Proceeds ($)",
-                      },
-                      )
 
+
+        buttons = []
+
+
+        visibility = []
+
+        j = 0
+        k = 0
+        for year, weekly_df in weekly_dfs.items():
+            # weekly_df["Month-Day"] = weekly_df["Date of Purchase"].dt.strftime("%m-%d")
+            weekly_df["Month-Day"]= weekly_df["Date of Purchase"].apply(lambda x: x.replace(year=2025))
+            year_vis = [True if i == j else False for i in range(len(weekly_dfs))]
+
+            print(f"{year}: {weekly_df['Month-Day'].unique()}")
+
+            for event, df_event in weekly_df.groupby("Event"):
+
+
+                fig.add_trace(go.Scatter(
+                    x=df_event["Month-Day"],
+                    y=df_event["Ticket Net Proceeds"],
+                    #color=weekly_df["Event"],
+                    # visible=True,
+                    name=str(event).capitalize() + " ("+year+")" #weekly_df["Event"]
+
+                    # labels={
+                    #     "Date of Purchase": "Date of Purchase",
+                    #     "Ticket Net Proceeds": "Weekly Ticket Proceeds ($)",
+                    # },
+                )
+                )
+                visibility.append(year_vis[j])
+                k+=1
+            #print(visibility)
+            buttons.append(
+                dict(label=year,
+                     method="update",
+                     args=[{"visible": visibility}]
+
+            ))
+
+            j+=1
+
+        buttons = [{'label': '2024', 'method': 'update', 'args': [{'visible': [True, True, False, False]}]}, {'label': '2025', 'method': 'update', 'args': [{'visible': [False, False, True, True]}]}]
+        print(buttons)
+
+        buttons.append(dict(
+            label="All Years",
+            method="update",
+            args=[{"visible": True * k}]
+        ))
+
+        # fig = px.line(weekly_df,
+        #               x="Date of Purchase",
+        #               y="Ticket Net Proceeds",
+        #               color="Event",
+        #
+        #               labels={
+        #                   "Date of Purchase": "Date of Purchase",
+        #                   "Ticket Net Proceeds": "Weekly Ticket Proceeds ($)",
+        #               },
+        #               )
+        #
         fig.update_layout(**self.layout_settings)
-        fig.update_traces(line=dict(width=5))
-        fig.update_yaxes(range=[0, 6000], linecolor='black', linewidth=6)
-        fig.update_xaxes(linecolor='black', linewidth=6, dtick=86400000.0 * 7)  # Set x-axis by week
+        fig.update_layout(
+            updatemenus=[
+                dict(type="buttons",
+                     direction="down",
+                     buttons=buttons,
+                    showactive=True
+                     )
+            ])
+        fig.update_layout(
+            xaxis_tickformat='%B'
+        )
+
+
+        # fig.update_traces(line=dict(width=5))
+        # fig.update_yaxes(range=[0, 6000], linecolor='black', linewidth=6)
+        # fig.update_xaxes(linecolor='black', linewidth=6, dtick=86400000.0 * 7)  # Set x-axis by week
 
         return fig
 

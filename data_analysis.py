@@ -89,19 +89,18 @@ class TicketAnalyzer:
         return zip_orders_df
 
     def analyze_weekly(self):
+        weekly_df = {}
+        for year, data in self.data.items():
+            # Group by date, event, payment type
+            grouped = data.groupby(["Date of Purchase", "Event", "Payment Type"])
+            grouped = grouped.agg({
+                'Ticket Net Proceeds': 'sum',
+                'Tickets in Order': 'count'
+            }).reset_index()
 
-        # Group by date, event, payment type
-        grouped = self.data.groupby(["Date of Purchase", "Event", "Payment Type"])
-        grouped = grouped.agg({
-            'Ticket Net Proceeds': 'sum',
-            'Tickets in Order': 'count'
-        }).reset_index()
-
-        print(self.data)
-        # Add ticket proceeds together by week
-        weekly_df = grouped.groupby(["Event", pd.Grouper(key="Date of Purchase", freq="W")])[
-            "Ticket Net Proceeds"].sum().reset_index()
-        print(weekly_df)
+            # Add ticket proceeds together by week
+            weekly_df[year] = grouped.groupby(["Event", pd.Grouper(key="Date of Purchase", freq="W")])[
+                "Ticket Net Proceeds"].sum().reset_index()
         return weekly_df
 
     def analyze_time_series(self):

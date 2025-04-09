@@ -24,10 +24,14 @@ def save_figure(fig, filename, directory='figures', format='html'):
     else:
         raise ValueError(f"Unsupported format: {format}")
 
-def save_dataframe(df, filename,directory='output'):
+def save_dataframe(dfs, filename,directory='output'):
+    df_combined = pd.DataFrame()
+    for df in dfs.values():
+        df_combined = pd.concat([df_combined, df], ignore_index=True)
+
     ensure_dir_exists(directory)
     file_path = os.path.join(directory, filename)
-    df.to_csv(file_path, index=False)
+    df_combined.to_csv(file_path, index=False)
     print(f'Saved dataframe to {file_path}')
 
 def print_analysis_summary(data_dict, title="Analysis Summary"):

@@ -2,6 +2,11 @@ from datetime import datetime
 
 DATA_PATH_2024 = "S4 Ticket Data COMPLETE.csv"
 DATA_PATH_2025 = "Copy of S5 Orders Report_04022025_test.csv"
+
+DATA_PATHS = {"2024": "S4 Ticket Data COMPLETE.csv",
+              "2025": "Copy of S5 Orders Report_04022025_test.csv",
+
+}
 CONCERT_DATES = {'FIREBIRD': datetime(2024,7,14).date(),
                 'SCHEHERAZADE': datetime(2024,7,28).date(),
                  'Tchaikovsky 5': datetime(2025, 4, 1, ).date(),

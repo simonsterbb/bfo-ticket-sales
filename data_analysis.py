@@ -105,84 +105,119 @@ class TicketAnalyzer:
 
     def analyze_time_series(self):
         """Analyze ticket sales over time"""
-        # Group by date, event, payment type
-        grouped = self.data.groupby(["Date of Purchase", "Event", "Payment Type"])
-        grouped = grouped.agg({
-            'Ticket Net Proceeds': 'sum',
-            'Tickets in Order': 'count'
-        }).reset_index()
 
-        # Pivot to get a time series for each event and payment type
-        pivot_df = grouped.pivot(
-            index="Date of Purchase",
-            columns=["Event", "Payment Type"],
-            values=["Tickets in Order", "Ticket Net Proceeds"])
+        pivot_df = {}
+        grouped = {}
+        stacked_data= {}
 
-        pivot_df = pivot_df.fillna(0)
-        pivot_df = pivot_df.sort_index()
-        stacked_data = pivot_df.cumsum()
+        for year, data in self.data.items():
+            # Group by date, event, payment type
+            grouped[year] = data.groupby(["Date of Purchase", "Event", "Payment Type"])
+            grouped[year] = grouped[year].agg({
+                'Ticket Net Proceeds': 'sum',
+                'Tickets in Order': 'count'
+            }).reset_index()
+
+            # Pivot to get a time series for each event and payment type
+            pivot_df[year] = grouped[year].pivot(
+                index="Date of Purchase",
+                columns=["Event", "Payment Type"],
+                values=["Tickets in Order", "Ticket Net Proceeds"])
+
+            pivot_df[year] = pivot_df[year].fillna(0)
+            pivot_df[year] = pivot_df[year].sort_index()
+            cols = pivot_df[year].columns
+            for event in pivot_df[year].columns.get_level_values("Event").unique():
+                for col in [
+                    ("Tickets in Order", event, "Cash"),
+                    ("Tickets in Order", event, "Free"),
+                    ("Ticket Net Proceeds", event, "Cash"),
+                    ("Ticket Net Proceeds", event, "Free")
+                ]:
+                    if col not in cols:
+                        pivot_df[year][col] = 0
+
+            pivot_df[year] = pivot_df[year].sort_index(axis=1)
+
+
+            stacked_data[year] = pivot_df[year].cumsum()
+
+
+
 
         return grouped, pivot_df, stacked_data
 
     def analyze_cumulative_sales(self, concert_dates):
 
-        _, _, stacked_data = self.analyze_time_series()
 
-        # Cumulative Ticket Sales (including free tickets) over season
-        df_unstacked = stacked_data["Tickets in Order"].stack(level=0,future_stack=True).reset_index()
-        df_unstacked["Purchased"] = df_unstacked["Cash"] + df_unstacked["Ticketleap"]
-        df_unstacked.drop(columns=["Cash", "Ticketleap"], inplace=True)
 
-        # Convert to long format for easier plotting
-        cumulative_df = df_unstacked.melt(id_vars=['Date of Purchase', 'Event'],
-                                    var_name="Payment Type",
-                                    value_name='Values')
+        _, _, stacked_data_tables = self.analyze_time_series()
 
-        timing_stats = {}
-        # Calculate the  free tickets given away per period of time
-        for concert, concert_date in concert_dates.items():
-            # Define time periods
-            time_vector = pd.to_datetime(
-                [(concert_date - pd.to_timedelta(60, unit='d')),  # Two months before
-                 (concert_date - pd.to_timedelta(30, unit='d')),  # One month before
-                 (concert_date - pd.to_timedelta(1, unit='w')),  # One week before
-                 (concert_date - pd.to_timedelta(1, unit='d')),  # One day before
-                 concert_date])  # Day of concert
 
-            # Filter by concert and by Free status
-            df_long_free = cumulative_df[
-                (cumulative_df["Payment Type"] == "Free") &
-                (cumulative_df["Event"] == concert)
-            ]
+        df_unstacked = {}
+        cumulative_df = {}
+        for year, stacked_data in stacked_data_tables.items():
 
-            # Keep only the last row of every day
-            df_by_day_free = df_long_free.sort_values("Date of Purchase").drop_duplicates("Date of Purchase",
-                                                                                          keep="last")
 
-            # Find the closest already-happened date to the defined time periods
-            df_total_free_tickets = pd.merge_asof(
-                pd.DataFrame({'target_date': time_vector}),  # Left side: your target dates
-                df_by_day_free,  # Right side: the DataFrame you're matching against
-                left_on='target_date',  # Column to match in target
-                right_on='Date of Purchase',  # Column to match in the DataFrame
-                direction='backward'  # Find the closest earlier date
-            ).drop(["target_date"], axis=1)
+            # Cumulative Ticket Sales (including free tickets) over season
+            df_unstacked[year] = stacked_data["Tickets in Order"].stack(level=0,future_stack=True).reset_index()
 
-            # Calculate new tickets sold in each time period
-            df_total_free_tickets["Diff Sold"] = (
-                        df_total_free_tickets["Values"] -
-                        df_total_free_tickets["Values"].shift(1))
+            df_unstacked[year]["Purchased"] = df_unstacked[year]["Cash"] + df_unstacked[year]["Ticketleap"]
+            df_unstacked[year].drop(columns=["Cash", "Ticketleap"], inplace=True)
 
-            # Fill first new tickets sold cell with total tickets sold
-            df_total_free_tickets.fillna({"Diff Sold":df_total_free_tickets["Values"]}, inplace=True)
+            # Convert to long format for easier plotting
+            cumulative_df[year] = df_unstacked[year].melt(id_vars=['Date of Purchase', 'Event'],
+                                        var_name="Payment Type",
+                                        value_name='Values')
 
-            # Calculate the percentage of total tickets sold in each time period
-            df_total_free_tickets["Diff Sold (%)"] = (
-                        df_total_free_tickets["Diff Sold"] /
-                        df_total_free_tickets["Values"].max() * 100
-            ).apply(lambda x: round(x, 0))
+            timing_stats = {}
+            # Calculate the  free tickets given away per period of time
+            for concert, concert_date in concert_dates.items():
+                # Define time periods
+                time_vector = pd.to_datetime(
+                    [(concert_date - pd.to_timedelta(60, unit='d')),  # Two months before
+                     (concert_date - pd.to_timedelta(30, unit='d')),  # One month before
+                     (concert_date - pd.to_timedelta(1, unit='w')),  # One week before
+                     (concert_date - pd.to_timedelta(1, unit='d')),  # One day before
+                     concert_date])  # Day of concert
 
-            timing_stats[concert] = df_total_free_tickets
+
+
+                # Filter by concert and by Free status
+
+                df_long_free = cumulative_df[year][
+                    (cumulative_df[year]["Payment Type"] == "Free") &
+                    (cumulative_df[year]["Event"] == concert)
+                ]
+
+                # Keep only the last row of every day
+                df_by_day_free = df_long_free.sort_values("Date of Purchase").drop_duplicates("Date of Purchase",
+                                                                                              keep="last")
+
+                # Find the closest already-happened date to the defined time periods
+                df_total_free_tickets = pd.merge_asof(
+                    pd.DataFrame({'target_date': time_vector}),  # Left side: your target dates
+                    df_by_day_free,  # Right side: the DataFrame you're matching against
+                    left_on='target_date',  # Column to match in target
+                    right_on='Date of Purchase',  # Column to match in the DataFrame
+                    direction='backward'  # Find the closest earlier date
+                ).drop(["target_date"], axis=1)
+
+                # Calculate new tickets sold in each time period
+                df_total_free_tickets["Diff Sold"] = (
+                            df_total_free_tickets["Values"] -
+                            df_total_free_tickets["Values"].shift(1))
+
+                # Fill first new tickets sold cell with total tickets sold
+                df_total_free_tickets.fillna({"Diff Sold":df_total_free_tickets["Values"]}, inplace=True)
+
+                # Calculate the percentage of total tickets sold in each time period
+                df_total_free_tickets["Diff Sold (%)"] = (
+                            df_total_free_tickets["Diff Sold"] /
+                            df_total_free_tickets["Values"].max() * 100
+                ).apply(lambda x: round(x, 0))
+
+                timing_stats[concert] = df_total_free_tickets
 
 
         return cumulative_df, timing_stats

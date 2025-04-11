@@ -47,7 +47,7 @@ class TicketDataLoader:
         df.loc[df["Ticket Net Proceeds"] < 32.59, "Ticket Type"] = "Pay What You Can"
 
         # Define Free Dickets
-        df["Payment Type"] = "Online"
+        df["Payment Type"] = "Ticketleap"
         df.loc[df["Ticket Net Proceeds"] == 0, "Payment Type"] = "Free"
 
 

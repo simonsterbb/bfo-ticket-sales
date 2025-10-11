@@ -278,6 +278,7 @@ class TicketVisualizer:
             cumulative_df["Month-Day"] = cumulative_df["Date of Purchase"].apply(lambda x: x.replace(year=2025))
 
             for (event, payment_type), df_event in cumulative_df.groupby(["Event", "Payment Type"]):
+                print(type(df_event))
                 # Add trace for each event
                 fig.add_trace(go.Scatter(
                     x=df_event["Month-Day"],
@@ -350,23 +351,119 @@ class TicketVisualizer:
 
         return fig
 
-    def plot_cumulative_income(self, cumulative_income_df):
-        # Cumulative income over the season
-        fig = px.line(cumulative_income_df,
-                      x="Date of Purchase",
-                      y="Purchased",
-                      color="Event",
-                      labels={
-                          "Date of Purchase": "Date of Purchase",
-                          "Purchased": "Total Income ($)",
-                      },
+    def plot_cumulative_income(self, cumulative_income_dfs):
 
-                      )
+        # Initialize figures
+        fig = go.Figure()
 
+        # Initialize values
+        buttons = []
+        k = 0  # Year counter
+
+        # Calculate total number of events
+        total_events = sum([cumulative_income_df["Event"].nunique() for cumulative_income_df in cumulative_income_dfs.values()])
+
+        # Define Color Map
+        colors = pc.qualitative.Plotly
+        color_map = []
+        [color_map.extend([colors[index]]) for index in range(total_events)]
+
+
+        for year, cumulative_income_df in cumulative_income_dfs.items():
+
+            # Visibility of traces
+            visibility = [False] * total_events * 2
+
+            cumulative_income_df = cumulative_income_df.sample(
+                frac=0.2).sort_index()  # Reduce points so dotted lines don't look janky
+            cumulative_income_df["Month-Day"] = cumulative_income_df["Date of Purchase"].apply(lambda x: x.replace(year=2025))
+
+            # Cumulative income over the season
+            for event, df_event in cumulative_income_df.groupby("Event"):
+                fig.add_trace(go.Scatter(
+                    x=df_event["Month-Day"],
+                    y=df_event["Purchased"],
+                    mode="lines",
+                    name=str(event).capitalize() + " (" + year + ")",
+                    line=dict(
+                        color=color_map[k],
+                        #dash=dash_map.get(payment_type, "solid"),
+                        width=5,
+
+                    ),
+
+                ))
+
+                # Set visibility to True for events that take place in the year studied
+                visibility[k] = True
+                k+=1
+
+            # Apply visibility instructions to each button
+            buttons.append(
+                dict(label=year,
+                     method="update",
+                     args=[{"visible": visibility}])
+            )
+
+            # All Years button
+        buttons.append(dict(
+            label="All Years",
+            method="update",
+            args=[{"visible": True * k}]
+        ))
+
+        # Add buttons to plot
+        fig.update_layout(
+            updatemenus=[
+                dict(type="buttons",
+                     direction="down",
+                     buttons=buttons,
+                     showactive=True,
+                     x=1.1,
+                     y=0.4
+                     )
+
+            ])
+
+        # Visual appearance of axes and plot
         fig.update_layout(**self.layout_settings)
+        fig.update_layout(
+            xaxis=dict(
+                title=dict(text="Date of Purchase"),
+                range=["2025-03-01", "2025-08-03"],
+                dtick=86400000.0 * 7,  # Set x-axis by week
+                # dtick="M1", # Set x-axis by month
+                # tickformat='%B',
+                linecolor='black',
+                linewidth=6,
+            ),
+            yaxis=dict(
+                title=dict(text="Total Tickets Sold", ),
+                range=[0, 20000],
+                linecolor='black',
+                linewidth=6
+            ),
+            legend=dict(itemclick="toggle", itemdoubleclick="toggleothers")
+            # Allow legend to toggle lines by clicking on them
+        )
 
-        fig.update_traces(line=dict(width=5))
-        fig.update_yaxes(range=[0, 13000], linecolor='black', linewidth=6)
-        fig.update_xaxes(linecolor='black', linewidth=6)
+
+
+            # fig = px.line(cumulative_income_df,
+            #               x="Date of Purchase",
+            #               y="Purchased",
+            #               color="Event",
+            #               labels={
+            #                   "Date of Purchase": "Date of Purchase",
+            #                   "Purchased": "Total Income ($)",
+            #               },
+            #
+            #               )
+            #
+            # fig.update_layout(**self.layout_settings)
+            #
+            # fig.update_traces(line=dict(width=5))
+            # fig.update_yaxes(range=[0, 13000], linecolor='black', linewidth=6)
+            # fig.update_xaxes(linecolor='black', linewidth=6)
 
         return fig

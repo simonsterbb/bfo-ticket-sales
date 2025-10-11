@@ -148,7 +148,11 @@ class TicketDataLoader:
         self.attendees_data["Confirmation ID"] = self.attendees_data["Order ID"]
         self.attendees_data["Event"] = self.attendees_data["Event Name"]
 
-        df = pd.merge(df,self.attendees_data[["Event",'How did you hear about this event?', "Confirmation ID"]], on="Confirmation ID")
+        df = pd.merge(
+            df, # the main df, taken from Orders
+            self.attendees_data[["Event",'How did you hear about this event?', "Order ID"]], # 2 columns taken from the attendees report + the matching column
+            left_on="Confirmation ID", # matching column from df
+            right_on="Order ID") # matching column from attendees report
         return df
 
 

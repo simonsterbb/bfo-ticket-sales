@@ -222,11 +222,17 @@ class TicketAnalyzer:
         return cumulative_df, timing_stats
 
     def analyze_cumulative_income(self, concert_dates):
-        _, _, stacked_data = self.analyze_time_series()
+        _, _, stacked_data_tables = self.analyze_time_series()
 
-        cumulative_income_df = stacked_data["Ticket Net Proceeds"].stack(level=0, future_stack=True).reset_index()
-        cumulative_income_df["Purchased"] = cumulative_income_df["Cash"] + cumulative_income_df["Ticketleap"]
-        cumulative_income_df.drop(columns=["Cash", "Ticketleap", "Free"], inplace=True)
+        df_unstacked = {}
+        cumulative_income_df = {}
+        for year, stacked_data in stacked_data_tables.items():
+
+
+
+            cumulative_income_df[year] = stacked_data["Ticket Net Proceeds"].stack(level=0, future_stack=True).reset_index()
+            cumulative_income_df[year]["Purchased"] = cumulative_income_df[year]["Cash"] + cumulative_income_df[year]["Ticketleap"]
+            cumulative_income_df[year].drop(columns=["Cash", "Ticketleap", "Free"], inplace=True)
 
         return cumulative_income_df
 

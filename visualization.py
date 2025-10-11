@@ -227,7 +227,7 @@ class TicketVisualizer:
         fig.update_layout(
             xaxis=dict(
                 title=dict(text="Date of Purchase"),
-                range=["2025-03-01", "2025-07-31"],
+                range=["2025-03-01", "2025-08-03"],
                                 dtick=86400000.0 * 7, # Set x-axis by week
                 # dtick="M1", # Set x-axis by month
                 #tickformat='%B',
@@ -331,7 +331,7 @@ class TicketVisualizer:
         fig.update_layout(
             xaxis=dict(
                 title=dict(text="Date of Purchase"),
-                range=["2025-03-01", "2025-07-31"],
+                range=["2025-03-01", "2025-08-03"],
                 dtick=86400000.0 * 7,  # Set x-axis by week
                 # dtick="M1", # Set x-axis by month
                 # tickformat='%B',
@@ -340,7 +340,7 @@ class TicketVisualizer:
             ),
             yaxis=dict(
                 title=dict(text="Total Tickets Sold", ),
-                range=[0, 550],
+                range=[0, 600],
                 linecolor='black',
                 linewidth=6
             ),

@@ -10,6 +10,7 @@ class TicketDataLoader:
     def __init__(self, base_path):
         self.base_path = base_path
         self.raw_data = None
+        self.attendees_data = None
         self.data = None
         self.geo_data = None
         self.data_dict = None
@@ -34,6 +35,10 @@ class TicketDataLoader:
             raise ValueError("Unknown file format")
 
     def process_format_A(self, df):
+        # If there's no Event listed, I need to import the Attendees report and correlate it
+        if not "Event" in df.columns:
+            df = self.process_attendees_report(df)
+
         # Take value per ticket and replicate rows
         df["Ticket Net Proceeds"] = round(df["Order Total"]/df["Tickets"], 2)
         df = df.loc[df.index.repeat(df["Tickets"])].reset_index(drop=True)
@@ -70,7 +75,6 @@ class TicketDataLoader:
 
         df["Tickets in Order"] = df["Tickets"]
         self.data = df
-
         return self.data
 
 
@@ -132,6 +136,21 @@ class TicketDataLoader:
         }
 
         return combined_geojson
+
+    def process_attendees_report(self, df):
+        # Import attendees report
+        self.attendees_data = pd.read_csv("S5 Attendees Report.csv")
+
+        # Remove duplicate values for each seat, so it only has each purchase
+        self.attendees_data.drop_duplicates(subset="Order ID", keep="first",inplace=True)
+
+        # Clean column titles
+        self.attendees_data["Confirmation ID"] = self.attendees_data["Order ID"]
+        self.attendees_data["Event"] = self.attendees_data["Event Name"]
+
+        df = pd.merge(df,self.attendees_data[["Event",'How did you hear about this event?', "Confirmation ID"]], on="Confirmation ID")
+        return df
+
 
     # def load_and_combine(self, states):
     #     combined_gdf = []

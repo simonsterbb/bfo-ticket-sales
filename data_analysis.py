@@ -109,7 +109,6 @@ class TicketAnalyzer:
         pivot_df = {}
         grouped = {}
         stacked_data= {}
-
         for year, data in self.data.items():
             # Group by date, event, payment type
             grouped[year] = data.groupby(["Date of Purchase", "Event", "Payment Type"])

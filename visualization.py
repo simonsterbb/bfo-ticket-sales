@@ -21,74 +21,84 @@ class TicketVisualizer:
             }
 
 
-    def plot_pwyc_by_source(self, heard_about_df):
-        heard_about_df_PWYC = heard_about_df[
-            heard_about_df["Ticket Type"] == "Pay What You Can"
-        ].sort_values("Average Ticket Price", ascending=False)
+    def plot_pwyc_by_source(self, heard_about_dfs):
 
-        fig = px.bar(
-            heard_about_df_PWYC,
-            x="How did you hear about this event? (Buyer)",
-            y="Average Ticket Price",
-            labels={
-                 "How did you hear about this event? (Buyer)": "How did you hear about this event?",
-            },
-            )
+        # Loop through years
+        for year, heard_about_df in heard_about_dfs.items():
+
+            heard_about_df_PWYC = heard_about_df[
+                heard_about_df["Ticket Type"] == "Pay What You Can"
+            ].sort_values("Average Ticket Price", ascending=False)
+
+            fig = px.bar(
+                heard_about_df_PWYC,
+                x="How did you hear about this event? (Buyer)",
+                y="Average Ticket Price",
+                labels={
+                     "How did you hear about this event? (Buyer)": "How did you hear about this event?",
+                },
+                )
 
 
-        tick_labels = {"Word of Mouth": "Word of Mouth",
-                       "Social Media": "Social Media",
-                       "Other": "Other",
-                       "Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)": "Events Calendar",
-                       "Previous BFO Event": "Previous BFO Event",
-                       "BFO Newsletter": "BFO Newsletter",
-                       "Flyer/Poster": "Flyer",
-                       "Advertisement": "Advertisement",
-                       "Newspaper": "Newspaper"
-        }
-        tick_vals = list(tick_labels.keys())
-        tick_text = list(tick_labels.values())
+            tick_labels = {"Word of Mouth": "Word of Mouth",
+                           "Social Media": "Social Media",
+                           "Other": "Other",
+                           "Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)": "Events Calendar",
+                           "Previous BFO Event": "Previous BFO Event",
+                           "BFO Newsletter": "BFO Newsletter",
+                           "Flyer/Poster": "Flyer",
+                           "Advertisement": "Advertisement",
+                           "Newspaper": "Newspaper"
+            }
+            tick_vals = list(tick_labels.keys())
+            tick_text = list(tick_labels.values())
 
-        fig.update_layout(**self.layout_settings,
-                          xaxis_tickangle=45,
-                          xaxis_tickvals=tick_vals,
-                          xaxis_ticktext=tick_text,
-                          yaxis_tickprefix='$',
-                          yaxis_tickformat=',.2f',  # Set to dollars
-                          )
+            fig.update_layout(**self.layout_settings,
+                              xaxis_tickangle=45,
+                              xaxis_tickvals=tick_vals,
+                              xaxis_ticktext=tick_text,
+                              yaxis_tickprefix='$',
+                              yaxis_tickformat=',.2f',  # Set to dollars
+                              )
 
         return fig
 
-    def plot_by_source(self, heard_about_df):
-        fig = px.bar(heard_about_df,
-                     x="How did you hear about this event? (Buyer)",
-                     y="Order ID",
-                     color="Ticket Type",
-                     barmode="group",
-                     labels={
-                         "How did you hear about this event? (Buyer)": "How did you hear about this event?",
-                         "Order ID": "Total Number of Tickets",
-                     },
-                     )
+    def plot_by_source(self, heard_about_dfs):
 
-        tick_labels = {"Word of Mouth": "Word of Mouth",
-                       "Social Media": "Social Media",
-                       "Other": "Other",
-                       "Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)": "Events Calendar",
-                       "Previous BFO Event": "Previous BFO Event",
-                       "BFO Newsletter": "BFO Newsletter",
-                       "Flyer/Poster": "Flyer",
-                       "Advertisement": "Advertisement",
-                       "Newspaper": "Newspaper"
-        }
-        tick_vals = list(tick_labels.keys())
-        tick_text = list(tick_labels.values())
+        for year, heard_about_df in heard_about_dfs.items():
+            fig = px.bar(heard_about_df,
+                         x="How did you hear about this event? (Buyer)",
+                         y="Order ID",
+                         color="Ticket Type",
+                         barmode="group",
+                         labels={
+                             "How did you hear about this event? (Buyer)": "How did you hear about this event?",
+                             "Order ID": "Total Number of Tickets",
+                         },
+                         )
 
-        fig.update_layout(
-            **self.layout_settings,
-                          xaxis_tickvals=tick_vals,
-                          xaxis_ticktext=tick_text,
-                          )
+            tick_labels = {"Word of Mouth": "Word of Mouth",
+                           "Social Media": "Social Media",
+                           "Other": "Other",
+                           "Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)": "Events Calendar",
+                           "Previous BFO Event": "Previous BFO Event",
+                           "BFO Newsletter": "BFO Newsletter",
+                           "Flyer/Poster": "Flyer",
+                           "Advertisement": "Advertisement",
+                           "Newspaper": "Newspaper",
+                           "AI": "AI",
+                           "NEC": "NEC",
+                           "Multiple": "Multiple"
+
+            }
+            tick_vals = list(tick_labels.keys())
+            tick_text = list(tick_labels.values())
+
+            fig.update_layout(
+                **self.layout_settings,
+                              xaxis_tickvals=tick_vals,
+                              xaxis_ticktext=tick_text,
+                              )
 
         return fig
 
@@ -236,7 +246,7 @@ class TicketVisualizer:
             ),
             yaxis=dict(
                 title=dict(text="Weekly Ticket Proceeds ($)",),
-                range=[0, 6000],
+                range=[0, 7000],
                 linecolor='black',
                 linewidth=6
             ),

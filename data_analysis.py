@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import re
 
 class TicketAnalyzer:
     """Class for analyzing ticket sales data."""
@@ -9,40 +10,105 @@ class TicketAnalyzer:
 
     def analyze_by_source(self):
 
-        if 'How did you hear about this event? (Buyer)' in self.data:
 
-            heard_about_df = self.data.groupby(
-                by=["How did you hear about this event? (Buyer)", "Ticket Type"],
-                as_index=False
-            ).aggregate({
-                "Ticket Net Proceeds": "sum",
-                "Order ID": ["nunique"]
-            })
 
-            # Calculate average ticket price
-            heard_about_df["Average Ticket Price"] = heard_about_df["Ticket Net Proceeds"]["sum"] / \
-                                                     heard_about_df["Order ID"]["nunique"]
-            # pd.set_option('display.max_columns', None)
+        heard_about_df = {}
+        for year, data in self.data.items():
 
-            # Format df (Flatten column names
-            flat_cols = []
-            [flat_cols.append(i[0]) for i in
-             heard_about_df.columns]  # iterate through this tuples and join them as single string
-            heard_about_df.columns = flat_cols  # now assign the list of flattened columns to the grouped columns.
 
-            # Sort by total sales
-            category_sums = heard_about_df.groupby("How did you hear about this event? (Buyer)")["Order ID"].sum()
-            sorted_categories = category_sums.sort_values(ascending=False).index
-            heard_about_df["How did you hear about this event? (Buyer)"] = pd.Categorical(
-                heard_about_df["How did you hear about this event? (Buyer)"],
-                categories=sorted_categories,
-                ordered=True)
-            heard_about_df = heard_about_df.sort_values(by="How did you hear about this event? (Buyer)")
 
-            return heard_about_df
+            if 'How did you hear about this event? (Buyer)' in data:
 
-        else:
-            raise ValueError("No data available")
+
+                heard_about_df[year] = data.groupby(
+                    by=["How did you hear about this event? (Buyer)", "Ticket Type"],
+                    as_index=False
+                ).aggregate({
+                    "Ticket Net Proceeds": "sum",
+                    "Order ID": ["nunique"]
+                })
+
+
+                # Calculate average ticket price
+                heard_about_df[year]["Average Ticket Price"] = heard_about_df[year]["Ticket Net Proceeds"]["sum"] / \
+                                                         heard_about_df[year]["Order ID"]["nunique"]
+                # pd.set_option('display.max_columns', None)
+
+                # Format df (Flatten column names
+                flat_cols = []
+                [flat_cols.append(i[0]) for i in
+                 heard_about_df[year].columns]  # iterate through this tuples and join them as single string
+                heard_about_df[year].columns = flat_cols  # now assign the list of flattened columns to the grouped columns.
+                print(year)
+                #print(np.unique(heard_about_df[year]["How did you hear about this event? (Buyer)"]))
+                #print(heard_about_df[year]["How did you hear about this event? (Buyer)"].str.contains('Previous BFO Event').value_counts())
+
+
+                heard_about_df[year]["How did you hear about this event? (Multi-Reason)"] = (
+                    heard_about_df[year]["How did you hear about this event? (Buyer)"]
+                    .apply(lambda x: re.split(r',(?![^(]*\))', x)))
+
+
+                # Fix this line:
+                heard_about_df[year].loc[
+                    heard_about_df[year]["How did you hear about this event? (Multi-Reason)"].str.len() > 1, "How did you hear about this event? (Buyer)"] = "Multiple"
+                #print(heard_about_df[year]["How did you hear about this event? (Buyer)"])
+                #print(re.split(r',(?![^(]*\))',heard_about_df[year]["How did you hear about this event? (Buyer)"]))
+                #print(heard_about_df[year]["How did you hear about this event? (Buyer)"].apply(lambda x: re.split(r',(?![^(]*\))', x))[102])
+                #print(heard_about_df[year]["How did you hear about this event? (Buyer)"].str.split(pat=',',expand=True))
+                #print(re.split(r',(?![^(]*\))',heard_about_df[year][13]))
+               # heard_about_df[year].drop(columns="How did you hear about this event? (Multi-Reason)", inplace=True)
+                WordOfMouth_list = ['friend','mom','husband','performer','david','alyssa','nick','invited','musician','kid','violin','bassoon','artist','maestra', 'member','brown','family', 'person', 'co-founders','coworker','conductor']
+                NEC_list = ['nec','jordan hall','new soi']
+                AI_List = ['AI','Gemini','Artificial Intelligence','ChatGPT']
+                BFONewsletter_list = ['email']
+                EventCalendar_list = ['bostix', 'looked','online', 'BFO Website']
+                Flyer_list = ['parade']
+                PreviousEvent_list = ['previous']
+                SocialMedia_list = ['facebook']
+                Other_list = ['south cove group sale', 'the nb', 'community partner', 'ticket leap','\\.\\.\\.']
+                clean_source_data = {"Word of Mouth": WordOfMouth_list,
+                                     "NEC": NEC_list,
+                                     'AI': AI_List,
+                                     "BFO Newsletter": BFONewsletter_list,
+                                     "Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)": EventCalendar_list,
+                                     "Flyer/Poster": Flyer_list,
+                                     "Previous BFO Event": PreviousEvent_list,
+                                     "Social Media": SocialMedia_list,
+                                     "Other": Other_list}
+
+
+                for summarized_source_name, raw_source_tag in clean_source_data.items():
+
+                    pattern='|'.join(raw_source_tag)
+
+                    #print(heard_about_df[year]["How did you hear about this event? (Buyer)"].str.contains(pattern,case=False,na=False))
+                    heard_about_df[year].loc[
+                        heard_about_df[year]["How did you hear about this event? (Buyer)"].str.contains(pattern,
+                                                                                                        case=False,
+                                                                                                        na=False),
+                        "How did you hear about this event? (Buyer)"
+                    ] = summarized_source_name
+
+
+
+                # Sort by total sales
+                category_sums = heard_about_df[year].groupby("How did you hear about this event? (Buyer)")["Order ID"].sum()
+                pd.set_option('display.max_rows', None)
+                sorted_categories = category_sums.sort_values(ascending=False).index
+                heard_about_df[year]["How did you hear about this event? (Buyer)"] = pd.Categorical(
+                    heard_about_df[year]["How did you hear about this event? (Buyer)"],
+                    categories=sorted_categories,
+                    ordered=True)
+
+                heard_about_df[year] = heard_about_df[year].sort_values(by="How did you hear about this event? (Buyer)")
+                print(heard_about_df)
+
+                # print(year)
+        return heard_about_df
+
+            # else:
+            #     raise ValueError("No data available")
 
     def analyze_by_city(self, select_top=10):
         """Analyze ticket data by city"""

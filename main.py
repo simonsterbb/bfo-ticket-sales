@@ -71,6 +71,7 @@ def main():
             pwyc_source_fig = visualizer.plot_pwyc_by_source(heard_about_df)
             source_fig = visualizer.plot_by_source(heard_about_df)
 
+
             if args.save_plots:
                 save_figure(pwyc_source_fig, 'pwyc_by_source', args.figures_dir, args.plot_format)
                 save_figure(source_fig, 'by_source', args.figures_dir, args.plot_format)

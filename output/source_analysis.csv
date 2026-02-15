@@ -1,30 +1,113 @@
-How did you hear about this event? (Buyer),Ticket Type,Ticket Net Proceeds,Order ID,Average Ticket Price
-Word of Mouth,Regular,2481.9,39,63.63846153846154
-Word of Mouth,Pay What You Can,2016.82,115,17.537565217391304
-Word of Mouth,Premium,2200.0,22,100.0
-Social Media,Student,30.0,1,30.0
-Social Media,Regular,1048.2,20,52.410000000000004
-Social Media,Premium,1050.0,9,116.66666666666667
-Social Media,Pay What You Can,1022.88,96,10.655
-Other,Regular,1498.2,27,55.48888888888889
-Other,Premium,1450.0,14,103.57142857142857
-Other,Pay What You Can,773.21,55,14.058363636363637
-Previous BFO Event,Student,20.0,2,10.0
-Previous BFO Event,Regular,1379.1,23,59.960869565217386
-Previous BFO Event,Premium,1100.0,11,100.0
-Previous BFO Event,Pay What You Can,331.0,33,10.030303030303031
-"Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)",Regular,720.0,13,55.38461538461539
-"Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)",Pay What You Can,546.0,45,12.133333333333333
-"Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)",Premium,1150.0,11,104.54545454545455
-BFO Newsletter,Student,30.0,2,15.0
-BFO Newsletter,Regular,659.1,16,41.19375
-BFO Newsletter,Premium,800.0,7,114.28571428571429
-BFO Newsletter,Pay What You Can,306.5,28,10.946428571428571
-Flyer/Poster,Student,10.0,1,10.0
-Flyer/Poster,Regular,90.0,2,45.0
-Flyer/Poster,Premium,150.0,2,75.0
-Flyer/Poster,Pay What You Can,219.0,29,7.551724137931035
-Advertisement,Regular,30.0,1,30.0
-Advertisement,Premium,200.0,2,100.0
-Advertisement,Pay What You Can,90.0,9,10.0
-Newspaper,Regular,30.0,1,30.0
+How did you hear about this event? (Buyer),Ticket Type,Ticket Net Proceeds,Order ID,Average Ticket Price,How did you hear about this event? (Multi-Reason)
+Word of Mouth,Premium,214.52,1,214.52,"[""My kid's the conductor :)""]"
+Word of Mouth,Pay What You Can,42.8,1,42.8,['Invited by a performer ']
+Word of Mouth,Other,259.98,1,259.98,['Family and Donor']
+Word of Mouth,Pay What You Can,26.5,1,26.5,['One of the performing artists ']
+Word of Mouth,Other,41.7,1,41.7,['Friend']
+Word of Mouth,Pay What You Can,42.8,2,21.4,['Friend']
+Word of Mouth,Pay What You Can,53.0,1,53.0,['Friend ']
+Word of Mouth,Pay What You Can,31.6,1,31.6,['Friend in the orchestra']
+Word of Mouth,Other,156.0,1,156.0,['Friend recommended ']
+Word of Mouth,Pay What You Can,0.0,1,0.0,['Person in performance ']
+Word of Mouth,Pay What You Can,56.0,1,56.0,"[""Friend's invitation""]"
+Word of Mouth,Pay What You Can,32.6,1,32.6,['From my friend Sergio Munoz Leiva who is violist']
+Word of Mouth,Pay What You Can,33.599999999999994,1,33.599999999999994,['orchestra member']
+Word of Mouth,Pay What You Can,0.0,1,0.0,['Husband is in the orchestra ']
+Word of Mouth,Pay What You Can,0.0,1,0.0,['My friend is the conductor. Alyssa Wang! I am a dancer with Boston Ballet and love supporting the symphony when I can! ']
+Word of Mouth,Pay What You Can,22.4,1,22.4,['Musician in orchestra']
+Word of Mouth,Other,156.0,1,156.0,['I know the Maestra']
+Word of Mouth,Other,100.0,1,100.0,"[""I'm Eric's mom.""]"
+Word of Mouth,Pay What You Can,42.8,1,42.8,"[""I'm a member of the orchestra""]"
+Word of Mouth,Other,364.0,1,364.0,['Nicholas Brown']
+Word of Mouth,Other,104.0,1,104.0,['Board member']
+Word of Mouth,Other,93.8,1,93.8,['Orchestra member']
+Word of Mouth,Pay What You Can,63.2,1,63.2,['The co-founders themselves']
+Word of Mouth,Other,93.8,1,93.8,['We know a member of the orchestra']
+Word of Mouth,Pay What You Can,0.0,1,0.0,['Bfo member']
+Word of Mouth,Other,104.0,1,104.0,['Supporter of David Feltner']
+Word of Mouth,Premium,697.19,5,139.43800000000002,['Word of Mouth']
+Word of Mouth,Regular,488.85,6,81.47500000000001,['Word of Mouth']
+Word of Mouth,Pay What You Can,22.4,1,22.4,['coworker']
+Word of Mouth,Other,2333.92,23,101.47478260869566,['Word of Mouth']
+Word of Mouth,Pay What You Can,10.98,1,10.98,['following the conductor']
+Word of Mouth,Pay What You Can,11.2,1,11.2,['musician']
+Word of Mouth,Pay What You Can,5.49,1,5.49,['BFO Musician']
+Word of Mouth,Premium,107.26,1,107.26,['Alyssa Wang is our niece! Word of mouth.']
+Word of Mouth,Pay What You Can,31.6,1,31.6,['musician in orchestra']
+Word of Mouth,Pay What You Can,0.0,1,0.0,['BFO musician']
+Word of Mouth,Pay What You Can,16.3,1,16.3,['A friend ']
+Word of Mouth,Pay What You Can,21.4,1,21.4,['BFO artist']
+Word of Mouth,Pay What You Can,1828.46,96,19.046458333333334,['Word of Mouth']
+Social Media,Other,906.3,11,82.39090909090909,"['Social Media (Facebook, Instagram, TikTok, LinkedIn)']"
+Social Media,Premium,107.26,1,107.26,"['Social Media (Facebook, Instagram, TikTok, LinkedIn)']"
+Social Media,Pay What You Can,33.599999999999994,1,33.599999999999994,['Facebook ']
+Social Media,Other,104.0,1,104.0,['Facebook']
+Social Media,Pay What You Can,2965.18,126,23.5331746031746,"['Social Media (Facebook, Instagram, TikTok, LinkedIn)']"
+Social Media,Regular,65.18,2,32.59,"['Social Media (Facebook, Instagram, TikTok, LinkedIn)']"
+"Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)",Pay What You Can,21.4,1,21.4,['Online ']
+"Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)",Other,1050.98,11,95.54363636363637,"['Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)']"
+"Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)",Pay What You Can,1068.14,36,29.67055555555556,"['Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)']"
+"Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)",Regular,65.18,1,65.18,"['Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)']"
+"Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)",Pay What You Can,22.4,1,22.4,['Looked up ']
+"Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)",Pay What You Can,31.6,1,31.6,['searched BOSTix']
+"Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)",Pay What You Can,733.98,29,25.309655172413795,['BFO Website']
+"Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)",Pay What You Can,26.5,1,26.5,['BOSTix']
+"Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)",Regular,456.26000000000005,4,114.06500000000001,['BFO Website']
+"Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)",Other,844.74,8,105.5925,['BFO Website']
+Previous BFO Event,Pay What You Can,1718.26,56,30.683214285714286,['Previous BFO Event']
+Previous BFO Event,Premium,429.04,4,107.26,['Previous BFO Event']
+Previous BFO Event,Regular,488.85,7,69.83571428571429,['Previous BFO Event']
+Previous BFO Event,Other,2342.03,16,146.376875,['Previous BFO Event']
+Previous BFO Event,Other,104.0,1,104.0,['Previous subscriber']
+Previous BFO Event,Pay What You Can,63.2,1,63.2,['I attended—and loved—a previous concert']
+BFO Newsletter,Regular,456.26000000000005,7,65.18,['BFO Newsletter']
+BFO Newsletter,Premium,589.9300000000001,5,117.98600000000002,['BFO Newsletter']
+BFO Newsletter,Pay What You Can,746.53,46,16.22891304347826,['BFO Newsletter']
+BFO Newsletter,Other,1198.96,13,92.22769230769231,['BFO Newsletter']
+Other,Regular,65.18,1,65.18,['Ticket leap']
+Other,Pay What You Can,63.2,1,63.2,['The NB']
+Other,Pay What You Can,1080.0,4,270.0,['South Cove group sale']
+Other,Other,3560.0,8,445.0,['South Cove group sale']
+Other,Other,191.9,2,95.95,['Ticket leap']
+Other,Other,206.0,2,103.0,['Community Partner']
+Other,Pay What You Can,63.2,1,63.2,['...']
+Other,Pay What You Can,74.4,9,8.266666666666667,['Community Partner']
+Multiple,Other,200.88,1,200.88,"['Isaac Erb', ' bassoonist in BFO']"
+Multiple,Regular,32.59,1,32.59,"['BFO Newsletter', ' BFO Website']"
+Multiple,Pay What You Can,63.2,1,63.2,"['Word of Mouth', ' BFO Newsletter']"
+Multiple,Pay What You Can,94.80000000000001,1,94.80000000000001,"['Word of Mouth', ' Our son plays with the orchestra and we have attended other concerts of the BFO.']"
+Multiple,Pay What You Can,63.2,1,63.2,"['Word of Mouth', ' Social Media (Facebook, Instagram, TikTok, LinkedIn)', ' Previous BFO Event', ' BFO Newsletter']"
+Multiple,Other,110.10000000000001,1,110.10000000000001,"['Social Media (Facebook, Instagram, TikTok, LinkedIn)', ' BFO Newsletter', ' BFO Website', ' Previous BFO Event']"
+Multiple,Pay What You Can,27.5,1,27.5,"['BFO Website', ' BFO Newsletter']"
+Multiple,Pay What You Can,0.0,1,0.0,"['BFO Website', ' Word of Mouth', ' Social Media (Facebook, Instagram, TikTok, LinkedIn)']"
+Multiple,Pay What You Can,42.8,1,42.8,"['BFO Newsletter', ' BFO Website', ' Previous BFO Event']"
+Multiple,Pay What You Can,54.0,2,27.0,"['BFO Newsletter', ' Previous BFO Event']"
+Multiple,Pay What You Can,11.2,1,11.2,"['My friend is performing with the orchestra', ' they invited me to attend. ']"
+Multiple,Pay What You Can,22.4,1,22.4,"['Previous BFO Event', ' Word of Mouth', ' Social Media (Facebook, Instagram, TikTok, LinkedIn)']"
+Multiple,Other,156.0,1,156.0,"['Previous BFO Event', ' Word of Mouth', ' Community Partner']"
+Multiple,Other,208.0,1,208.0,"['Previous BFO Event', ' Word of Mouth', ' BFO Website']"
+Multiple,Pay What You Can,53.0,1,53.0,"['Previous BFO Event', ' Flyer/Poster']"
+Multiple,Pay What You Can,94.80000000000001,1,94.80000000000001,"['Previous BFO Event', ' BFO Newsletter', ' BFO Website', ' Word of Mouth']"
+Flyer/Poster,Pay What You Can,174.2,11,15.836363636363636,['Flyer/Poster']
+Flyer/Poster,Other,411.9,4,102.975,['Flyer/Poster']
+Flyer/Poster,Pay What You Can,32.6,1,32.6,"['Flyer/Poster, Hand out at pride parade :)']"
+AI,Pay What You Can,42.8,3,14.266666666666666,['email']
+AI,Pay What You Can,0.0,1,0.0,['Gemini Artificial Intelligence']
+AI,Pay What You Can,22.4,1,22.4,['AI agent']
+AI,Premium,268.15000000000003,1,268.15000000000003,['email']
+AI,Pay What You Can,22.18,2,11.09,['Email']
+AI,Pay What You Can,40.589999999999996,1,40.589999999999996,['ChatGPT']
+AI,Regular,130.36,2,65.18,['Emails from BFO']
+Newspaper,Pay What You Can,197.7,7,28.24285714285714,['Newspaper']
+Newspaper,Premium,107.26,1,107.26,['Newspaper']
+Newspaper,Regular,65.18,1,65.18,['Newspaper']
+Newspaper,Other,161.32,1,161.32,['Newspaper']
+NEC,Pay What You Can,0.0,1,0.0,['NEC Website']
+NEC,Pay What You Can,0.0,1,0.0,['NEC Website ']
+NEC,Pay What You Can,0.0,1,0.0,['NEC Calendar ']
+NEC,Other,156.0,1,156.0,['New soi']
+NEC,Pay What You Can,44.8,1,44.8,['From  NEC SOI section II Group']
+NEC,Pay What You Can,42.8,1,42.8,['I attend Jordan Hall frequently']
+NEC,Pay What You Can,0.0,1,0.0,['Jordan Hall Events']
+NEC,Pay What You Can,63.2,2,31.6,['necmusic.edu']
+NEC,Other,146.8,1,146.8,['Web search to see if NEC had any concerts that day.']

@@ -74,6 +74,7 @@ class TicketDataLoader:
         df["Buyer City"] = df["Buyer City"].str.title()
 
         df["Tickets in Order"] = df["Tickets"]
+        df['How did you hear about this event? (Buyer)'] = df['How did you hear about this event?']
         self.data = df
         return self.data
 

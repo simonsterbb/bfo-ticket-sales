@@ -20,22 +20,24 @@ class TicketAnalyzer:
         source_list_df = {}
         for year, data in self.data.items():
 
-            # Get unique values
-            unique_sources = data[year]['How did you hear about this event?'].unique()
+            if 'How did you hear about this event? (Buyer)' in data:
 
-            # Create initial mapping (both columns start identical)
-            source_list_df[year] = pd.DataFrame({
-                "Customer Input": unique_sources,
-                "Source Saved As": unique_sources
-                           })
+                # Get unique values
+                unique_sources = data['How did you hear about this event? (Buyer)'].unique()
 
-            # Apply categorization based on config patterns
-            for summarized_source_name, raw_source_tag in CLEAN_SOURCE_DATA_STRINGS.items():
-                pattern = '|'.join(raw_source_tag)
+                # Create initial mapping (both columns start identical)
+                source_list_df[year] = pd.DataFrame({
+                    "Customer Input": unique_sources,
+                    "Source Saved As": unique_sources
+                               })
 
-                # Update source saved as for matching entries
-                mask = source_list_df[year]["Source Saved As"].str.contains(pattern, case=False, na=False, regex=True)
-                source_list_df[year].loc[mask, "Source Saved As"] = summarized_source_name
+                # Apply categorization based on config patterns
+                for summarized_source_name, raw_source_tag in CLEAN_SOURCE_DATA_STRINGS.items():
+                    pattern = '|'.join(raw_source_tag)
+
+                    # Update source saved as for matching entries
+                    mask = source_list_df[year]["Source Saved As"].str.contains(pattern, case=False, na=False)
+                    source_list_df[year].loc[mask, "Source Saved As"] = summarized_source_name
 
         return source_list_df
 

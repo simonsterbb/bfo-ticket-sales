@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import re
+from config import CLEAN_SOURCE_DATA_STRINGS
 
 class TicketAnalyzer:
     """Class for analyzing ticket sales data."""
@@ -8,7 +9,40 @@ class TicketAnalyzer:
         """Initialize with preprocessed ticket data."""
         self.data = data
 
+    def analyze_by_custom_source(self):
+        """
+        Create a mapping of custom input string names for responses to "How did you hear about this event" to
+        categorized source names used in the graphs
+        :return: {year: DataFrame} with columns 'Customer Input' and 'Source Saved'
+        """
+
+
+        source_list_df = {}
+        for year, data in self.data.items():
+
+            # Get unique values
+            unique_sources = data[year]['How did you hear about this event?'].unique()
+
+            # Create initial mapping (both columns start identical)
+            source_list_df[year] = pd.DataFrame({
+                "Customer Input": unique_sources,
+                "Source Saved As": unique_sources
+                           })
+
+            # Apply categorization based on config patterns
+            for summarized_source_name, raw_source_tag in CLEAN_SOURCE_DATA_STRINGS.items():
+                pattern = '|'.join(raw_source_tag)
+
+                # Update source saved as for matching entries
+                mask = source_list_df[year]["Source Saved As"].str.contains(pattern, case=False, na=False, regex=True)
+                source_list_df[year].loc[mask, "Source Saved As"] = summarized_source_name
+
+        return source_list_df
+
     def analyze_by_source(self):
+
+
+
 
 
 
@@ -32,7 +66,7 @@ class TicketAnalyzer:
                 # Calculate average ticket price
                 heard_about_df[year]["Average Ticket Price"] = heard_about_df[year]["Ticket Net Proceeds"]["sum"] / \
                                                          heard_about_df[year]["Order ID"]["nunique"]
-                # pd.set_option('display.max_columns', None)
+
 
                 # Format df (Flatten column names
                 flat_cols = []
@@ -40,57 +74,6 @@ class TicketAnalyzer:
                  heard_about_df[year].columns]  # iterate through this tuples and join them as single string
                 heard_about_df[year].columns = flat_cols  # now assign the list of flattened columns to the grouped columns.
                 print(year)
-                #print(np.unique(heard_about_df[year]["How did you hear about this event? (Buyer)"]))
-                #print(heard_about_df[year]["How did you hear about this event? (Buyer)"].str.contains('Previous BFO Event').value_counts())
-
-
-                heard_about_df[year]["How did you hear about this event? (Multi-Reason)"] = (
-                    heard_about_df[year]["How did you hear about this event? (Buyer)"]
-                    .apply(lambda x: re.split(r',(?![^(]*\))', x)))
-
-
-                # Fix this line:
-                heard_about_df[year].loc[
-                    heard_about_df[year]["How did you hear about this event? (Multi-Reason)"].str.len() > 1, "How did you hear about this event? (Buyer)"] = "Multiple"
-                #print(heard_about_df[year]["How did you hear about this event? (Buyer)"])
-                #print(re.split(r',(?![^(]*\))',heard_about_df[year]["How did you hear about this event? (Buyer)"]))
-                #print(heard_about_df[year]["How did you hear about this event? (Buyer)"].apply(lambda x: re.split(r',(?![^(]*\))', x))[102])
-                #print(heard_about_df[year]["How did you hear about this event? (Buyer)"].str.split(pat=',',expand=True))
-                #print(re.split(r',(?![^(]*\))',heard_about_df[year][13]))
-               # heard_about_df[year].drop(columns="How did you hear about this event? (Multi-Reason)", inplace=True)
-                WordOfMouth_list = ['friend','mom','husband','performer','david','alyssa','nick','invited','musician','kid','violin','bassoon','artist','maestra', 'member','brown','family', 'person', 'co-founders','coworker','conductor']
-                NEC_list = ['nec','jordan hall','new soi']
-                AI_List = ['AI','Gemini','Artificial Intelligence','ChatGPT']
-                BFONewsletter_list = ['email']
-                EventCalendar_list = ['bostix', 'looked','online', 'BFO Website']
-                Flyer_list = ['parade']
-                PreviousEvent_list = ['previous']
-                SocialMedia_list = ['facebook']
-                Other_list = ['south cove group sale', 'the nb', 'community partner', 'ticket leap','\\.\\.\\.']
-                clean_source_data = {"Word of Mouth": WordOfMouth_list,
-                                     "NEC": NEC_list,
-                                     'AI': AI_List,
-                                     "BFO Newsletter": BFONewsletter_list,
-                                     "Online Events Calendar (The Boston Calendar, ArtsBoston, etc.)": EventCalendar_list,
-                                     "Flyer/Poster": Flyer_list,
-                                     "Previous BFO Event": PreviousEvent_list,
-                                     "Social Media": SocialMedia_list,
-                                     "Other": Other_list}
-
-
-                for summarized_source_name, raw_source_tag in clean_source_data.items():
-
-                    pattern='|'.join(raw_source_tag)
-
-                    #print(heard_about_df[year]["How did you hear about this event? (Buyer)"].str.contains(pattern,case=False,na=False))
-                    heard_about_df[year].loc[
-                        heard_about_df[year]["How did you hear about this event? (Buyer)"].str.contains(pattern,
-                                                                                                        case=False,
-                                                                                                        na=False),
-                        "How did you hear about this event? (Buyer)"
-                    ] = summarized_source_name
-
-
 
                 # Sort by total sales
                 category_sums = heard_about_df[year].groupby("How did you hear about this event? (Buyer)")["Order ID"].sum()
@@ -102,9 +85,9 @@ class TicketAnalyzer:
                     ordered=True)
 
                 heard_about_df[year] = heard_about_df[year].sort_values(by="How did you hear about this event? (Buyer)")
-                print(heard_about_df)
 
-                # print(year)
+
+
         return heard_about_df
 
             # else:

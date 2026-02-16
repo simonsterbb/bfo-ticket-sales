@@ -48,7 +48,10 @@ class TicketVisualizer:
                            "BFO Newsletter": "BFO Newsletter",
                            "Flyer/Poster": "Flyer",
                            "Advertisement": "Advertisement",
-                           "Newspaper": "Newspaper"
+                           "Newspaper": "Newspaper",
+                           "AI": "AI",
+                           "NEC": "NEC",
+                           "Multiple": "Multiple"
             }
             tick_vals = list(tick_labels.keys())
             tick_text = list(tick_labels.values())

@@ -67,6 +67,10 @@ def main():
             heard_about_df = analyzer.analyze_by_source()
             save_dataframe(heard_about_df, 'source_analysis.csv', args.output_dir)
 
+            source_list_df = analyzer.analyze_by_custom_source()
+            save_dataframe(source_list_df,"custom_source_key.csv", args.output_dir)
+
+
             # Create visualizations for where people found out about BFO analysis
             pwyc_source_fig = visualizer.plot_pwyc_by_source(heard_about_df)
             source_fig = visualizer.plot_by_source(heard_about_df)

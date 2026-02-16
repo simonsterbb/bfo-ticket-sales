@@ -1,10 +1,11 @@
 import pandas as pd
 from urllib.request import urlopen
 import json
-from config import DATA_PATH_2024, ZIPCODE_URLS, CONCERT_DATES
+from config import DATA_PATH_2024, ZIPCODE_URLS, CONCERT_DATES, CLEAN_SOURCE_DATA_STRINGS
 import os
 from utils import save_geojson
 import geopandas as gpd
+import re
 
 class TicketDataLoader:
     def __init__(self, base_path):
@@ -57,7 +58,6 @@ class TicketDataLoader:
 
 
         # Clean date and time
-
         df["Date & time"] = pd.to_datetime(df["Date & time"])#, format="%-m/%-d/%Y %H:%M")
         df["Time of Purchase"] = df['Date & time'].dt.time
         df["Date of Purchase"] =  pd.to_datetime(df['Date & time'].dt.date)
@@ -74,7 +74,28 @@ class TicketDataLoader:
         df["Buyer City"] = df["Buyer City"].str.title()
 
         df["Tickets in Order"] = df["Tickets"]
+
+        ## Clean source (How did you hear about this event)
         df['How did you hear about this event? (Buyer)'] = df['How did you hear about this event?']
+        df["How did you hear about this event? (Multi-Reason)"] = ( # Split source at commas into multiple reasons, send to new column
+            df["How did you hear about this event? (Buyer)"].astype(str)
+            .apply(lambda x: re.split(r',(?![^(]*\))', x))) # Split at commas not contained in parentheses
+
+        df.loc[
+            df[
+                "How did you hear about this event? (Multi-Reason)"].str.len() > 1,
+            "How did you hear about this event? (Buyer)"
+        ] = "Multiple" # Where there are multiple reasons, change initial column to "Multiple"
+
+        for summarized_source_name, raw_source_tag in CLEAN_SOURCE_DATA_STRINGS.items(): # Clean up and summarize custom entries
+            pattern = '|'.join(raw_source_tag)
+
+            df.loc[
+                df["How did you hear about this event? (Buyer)"].str.contains(pattern, case=False, na=False),
+                "How did you hear about this event? (Buyer)"
+            ] = summarized_source_name
+
+
         self.data = df
         return self.data
 
